@@ -18,6 +18,8 @@ services:
     profiles: ["dev"]
     ports:
       - "3306:3306"
+    volumes:
+      - "./docker/mysql/data:/var/lib/mysql"
   web:
     image: "webdevops/php-apache:8.2"
     env_file:
@@ -33,4 +35,6 @@ services:
     profiles: ["prod"]
     ports:
       - "3306:3306"
+    volumes:
+      - "./docker/mysql/data:/var/lib/mysql"
 
