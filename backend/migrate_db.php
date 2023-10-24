@@ -9,7 +9,7 @@ if (!$db) {
 }
 
 $db->query("
-    CREATE TABLE users (
+    CREATE TABLE IF NOT EXISTS users (
         id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         username VARCHAR(30) NOT NULL,
         password VARCHAR(255) NOT NULL
@@ -17,14 +17,14 @@ $db->query("
 ");
 
 $db->query("
-    CREATE TABLE categories (
+    CREATE TABLE IF NOT EXISTS categories (
         id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(255) NOT NULL
     );
 ");
 
 $db->query("
-    CREATE TABLE posts (
+    CREATE TABLE IF NOT EXISTS posts (
         id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
         content TEXT NOT NULL,
@@ -34,7 +34,7 @@ $db->query("
 ");
 
 $db->query("
-    CREATE TABLE posts_categories (
+    CREATE TABLE IF NOT EXISTS posts_categories (
         post_id INT(6) UNSIGNED NOT NULL,
         category_id INT(6) UNSIGNED NOT NULL,
         FOREIGN KEY (post_id) REFERENCES posts(id),
