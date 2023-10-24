@@ -21,6 +21,8 @@ RUN composer install
 # Copy DB migration files
 COPY ./migrate_db.php ./database_connection.php /app/
 
+COPY ./vhost.conf /opt/docker/etc/httpd/vhost.conf
+
 # copy apache config
 #COPY ./docker/api/dev/vhost.conf /opt/docker/etc/httpd/vhost.conf
 
