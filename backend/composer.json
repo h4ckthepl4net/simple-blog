@@ -8,7 +8,9 @@
             "Commands\\": "commands/"
         }
     },
-    "require": {},
+    "require": {
+        "doctrine/migrations": "^3.6"
+    },
     "scripts": {
         "migration:create": "Commands\\MigrationManager::create"
     }

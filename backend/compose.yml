@@ -1,25 +1,25 @@
 services:
   web-dev:
-    image: "webdevops/php-apache-dev"
+    image: "webdevops/php-apache-dev:8.2"
     env_file:
-      - "backend/config/.env.dev"
+      - "config/.env.dev"
     depends_on: ["mysql-dev"]
     profiles: ["dev"]
     ports:
       - "80:80"
     volumes:
-      - "./src/:/app"
+      - "./:/app"
   mysql-dev:
     image: "mysql"
     env_file:
-      - "backend/config/.env.dev"
+      - "config/.env.dev"
     profiles: ["dev"]
     ports:
       - "3306:3306"
   web:
-    image: "webdevops/php-apache"
+    image: "webdevops/php-apache:8.2"
     env_file:
-      - "backend/config/.env"
+      - "config/.env"
     depends_on: ["mysql"]
     profiles: ["prod"]
     ports:
@@ -27,7 +27,7 @@ services:
   mysql:
     image: "mysql"
     env_file:
-      - "backend/config/.env"
+      - "config/.env"
     profiles: ["prod"]
     ports:
       - "3306:3306"
