@@ -4,12 +4,11 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "ReactBlog\\Backend\\": "src/",
-            "Commands\\": "commands/"
+            "ReactBlog\\Backend\\": "src/"
         }
     },
-    "require": {},
+    "require": {
+    },
     "scripts": {
-        "migration:create": "Commands\\MigrationManager::create"
     }
 }
