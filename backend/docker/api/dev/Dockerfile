@@ -19,16 +19,11 @@ COPY ./composer.json ./composer.lock /app/
 RUN composer install
 
 # Copy DB migration files
-COPY ./migrate_db.php /app/
-
-# run migrations and seeders
-RUN php migrate_db.php
+COPY ./migrate_db.php ./database_connection.php /app/
 
 # copy apache config
 #COPY ./docker/api/dev/vhost.conf /opt/docker/etc/httpd/vhost.conf
 
 EXPOSE 80
-
-CMD ["apache2ctl", "-D", "FOREGROUND"]
 
 

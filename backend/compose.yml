@@ -5,7 +5,9 @@ services:
       dockerfile: "docker/api/dev/Dockerfile"
     env_file:
       - "config/.env.dev"
-    depends_on: ["mysql-dev"]
+    depends_on:
+      "mysql-dev":
+        condition: service_healthy
     profiles: ["dev"]
     ports:
       - "80:80"
@@ -20,11 +22,17 @@ services:
       - "3306:3306"
     volumes:
       - "./docker/mysql/data:/var/lib/mysql"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "-u", "${MYSQL_USER:-root}", "-p${MYSQL_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
   web:
     image: "webdevops/php-apache:8.2"
     env_file:
       - "config/.env"
-    depends_on: ["mysql"]
+    depends_on:
+      - mysql
     profiles: ["prod"]
     ports:
       - "80:80"
