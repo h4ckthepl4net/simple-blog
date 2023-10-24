@@ -1,5 +1,7 @@
 FROM webdevops/php-apache-dev:8.2
 
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y \
@@ -10,11 +12,17 @@ RUN apt-get update && apt-get install -y \
 # Install composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Copy composer files
+COPY ./composer.json ./composer.lock /app/
+
 # Install composer dependencies
 RUN composer install
 
+# Copy DB migration files
+COPY ./migrate_db.php /app/
+
 # run migrations and seeders
-./vendor/bin/doctrine-migrations migrations:migrate --no-interaction
+RUN php migrate_db.php
 
 # copy apache config
 #COPY ./docker/api/dev/vhost.conf /opt/docker/etc/httpd/vhost.conf
