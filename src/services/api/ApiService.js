@@ -38,4 +38,8 @@ export class ApiService {
         return this.axiosInstance.delete(path, config);
     }
 
+    static async patch(path, data, config) {
+        return this.axiosInstance.patch(path, data, config);
+    }
+
 }
