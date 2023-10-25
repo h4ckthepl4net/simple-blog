@@ -85,15 +85,9 @@ class PostsModel extends BaseModel {
 
     public function deletePost($id, $userId = null) { // TODO optimize queries
         if ($userId) {
-            $checkIfUserOwnsPostSql = "
-                SELECT * FROM posts WHERE id = :id AND user_id = :user_id;
-            ";
-            $checkIfUserOwnsPostParams = [
-                'id' => $id,
-                'user_id' => $userId,
-            ];
-            $userPost = $this->query($checkIfUserOwnsPostSql, $checkIfUserOwnsPostParams);
-            if (!$userPost) {
+            $post = $this->getPost($id);
+            $post = $post[0];
+            if (!$post || $post['user_id'] !== $userId) {
                 throw new NotFoundException('Post not found');
             }
         }
@@ -107,11 +101,13 @@ class PostsModel extends BaseModel {
         $sql = "
             DELETE FROM posts WHERE id = :id;
         ";
-        return $this->query($sql, $params);
+        $this->query($sql, $params);
+        return $post;
     }
 
     public function editPost($postId, $updateData, $userId = null) {
-        $this->deletePost($postId, $userId); // TODO done this to do it faster, but it's not the best way
-        return $this->createPost($userId, $updateData['title'], $updateData['content'], $updateData['categories']);
+        $deletedPostData = $this->deletePost($postId, $userId); // TODO done this to do it faster, but it's not the best way
+        $mergedData = array_merge($deletedPostData, $updateData);
+        return $this->createPost($userId, $mergedData['title'], $mergedData['content'], $mergedData['categories']);
     }
 }
