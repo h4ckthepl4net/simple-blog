@@ -5,6 +5,8 @@ This is a simple blog project made with react.js php and mysql
 
 # To run the project
 
+# * Check the line endings in /backend/db_migrate.sh file, it may cause container OS not being able to find migrate_db.php file (On Windows maybe, replace CRLF with LF)*
+
 docker, docker compose plugin, node.js and npm must be installed, and docker engine must be started
 
 # Step 1
