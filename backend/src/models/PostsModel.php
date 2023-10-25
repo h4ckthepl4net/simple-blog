@@ -2,6 +2,7 @@
 
 namespace ReactBlog\Backend\models;
 
+use ReactBlog\Backend\exceptions\NotFoundException;
 use ReactBlog\Backend\models\BaseModel;
 
 class PostsModel extends BaseModel {
@@ -81,7 +82,20 @@ class PostsModel extends BaseModel {
         return $this->query($sql, $params);
     }
 
-    public function deletePost($id) {
+    public function deletePost($id, $userId = null) {
+        if ($userId) {
+            $checkIfUserOwnsPostSql = "
+                SELECT * FROM posts WHERE id = :id AND user_id = :user_id;
+            ";
+            $checkIfUserOwnsPostParams = [
+                'id' => $id,
+                'user_id' => $userId,
+            ];
+            $userPost = $this->query($checkIfUserOwnsPostSql, $checkIfUserOwnsPostParams);
+            if (!$userPost) {
+                throw new NotFoundException('Post not found');
+            }
+        }
         $sql = "
             DELETE FROM posts_categories WHERE post_id = :id;
         ";
