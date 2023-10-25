@@ -34,6 +34,11 @@ class BaseController
         $this->validate($constraints, $params);
     }
 
+    public function validatePostBody($constraints) {
+        $params = $this->request->paramsPost()->all();
+        $this->validate($constraints, $params);
+    }
+
     /**
      * @throws IntegrityViolationException
      */
