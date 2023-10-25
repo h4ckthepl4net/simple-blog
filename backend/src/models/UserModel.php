@@ -23,7 +23,8 @@ class UserModel extends BaseModel
             'username' => $username,
             'password' => $hashed,
         ];
-        return !!$this->query($sql, $params);
+        $result = $this->query($sql, $params);
+        return !!$result;
     }
 
     public function createUser($username, $password)
