@@ -46,7 +46,7 @@ class CategoryModel extends BaseModel
         return $this->query($sql, $params);
     }
 
-    public function createMultipleCategories($categories)
+    public function createMultipleCategories($categories) // TODO make user of RETURNING clause
     {
         $sql = "
             INSERT IGNORE INTO categories (name) VALUES 
@@ -63,7 +63,7 @@ class CategoryModel extends BaseModel
         $this->query($sql, $params);
         $sql2 = "
             SELECT id FROM categories WHERE name IN (".implode(',', array_fill(0, $categoriesCount, '?')).");
-        ";
+        "; // TODO fix this query
         return $this->query($sql2, $categories);
     }
 }
