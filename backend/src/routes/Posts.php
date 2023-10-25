@@ -39,3 +39,12 @@ $klein->respond('DELETE', '/posts/[i:postId]', function ($request, $response) {
     );
 });
 
+$klein->respond('PATCH', '/posts/[i:postId]', function ($request, $response) {
+    callControllerFunction(
+        'ReactBlog\Backend\Controllers\PostsController',
+        'editPost',
+        $request,
+        $response,
+    );
+});
+
