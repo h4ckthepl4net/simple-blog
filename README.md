@@ -1,6 +1,8 @@
 # Information
 This is a simple blog project made with react.js php and mysql
 
+# The repo is a monorepo containing front-end at the root and backend in the /backend folder
+
 # To run the project
 
 docker, docker compose plugin, node.js and npm must be installed
