@@ -8,11 +8,11 @@ function callControllerFunction ($controller, $function, $request, $response) {
         $response->json([
             'error' => true,
             'message' => $e->getMessage(),
-        ])->code(400)->send();
+        ])->code(HTTPCodes::BAD_REQUEST)->send();
     } catch (\Nowakowskir\JWT\Exceptions\IntegrityViolationException $e) {
         $response->json([
             'error' => true,
             'message' => $e->getMessage(),
-        ])->code(401)->send();
+        ])->code(HTTPCodes::UNAUTHORIZED)->send();
     }
 }

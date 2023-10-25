@@ -30,7 +30,7 @@ class PostsController extends BaseController {
         $model = new \ReactBlog\Backend\Models\PostsModel();
         $post = $model->getPost($postId);
         if (!array_key_exists(0, $post)) { // TODO check this
-            $response->code(404);
+            $response->code(\HTTPCodes::NOT_FOUND);
             $response->json([
                 'error' => true,
                 'message' => 'Post not found',
