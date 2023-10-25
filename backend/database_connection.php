@@ -10,6 +10,4 @@ $password = getenv('MYSQL_PASSWORD') ?: '';
 
 $dbString = 'mysql:host='.$host.';port='.$port.';dbname='.$dbname;
 
-echo $dbString;
-
 $db = new PDO($dbString, $user, $password);
