@@ -50,8 +50,9 @@ npm start
 
 to start the project
 
-`npm start` will start all services with profile named 'dev' and with `/backend/config/.env.dev` file,
-there is also a profile named 'prod' but it is not configured yet
+`npm start` will start all backend services (PHP/MySQL) with profile named 'dev' and with `/backend/config/.env.dev` file,
+(there is also a profile named 'prod' but it is not configured yet), and after successfull launch of containers it will 
+serve react.js frontend app with webpack-dev-server
 
 # API Container
 
