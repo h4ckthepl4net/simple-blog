@@ -20,11 +20,19 @@ namespace ReactBlog\Backend\models {
             $paramsCount = count($params);
             if ($params && $paramsCount > 0) {
                 for ($i = 0; $i < $paramsCount; $i++) {
-                    $param = $paramKeys[$i];
-                    $stmt->bindParam(':'.$param, $params[$param]);
+                    $paramKey = $paramKeys[$i];
+                    $paramValue = $params[$paramKey];
+                    $paramType = \PDO::PARAM_STR;
+                    if (is_int($paramValue))
+                        $paramType = \PDO::PARAM_INT;
+                    else if (is_bool($paramValue))
+                        $paramType = \PDO::PARAM_BOOL;
+                    else if (is_null($paramValue))
+                        $paramType = \PDO::PARAM_NULL;
+                    $stmt->bindValue(':'.$paramKey, $paramValue, $paramType);
                 }
             }
-            $stmt->execute($params);
+            $stmt->execute();
             $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
             $stmt->closeCursor();
             return $result;
