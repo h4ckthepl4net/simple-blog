@@ -1,7 +1,7 @@
 import axios from "axios";
 import {ApiServiceException} from "./ApiServiceException";
 
-const APP_API_URL = process.env.REACT_APP_API_URL;
+const APP_API_URL = 'http://localhost:80/' //process.env.REACT_APP_API_URL; // TODO resolve "undeclared identifier 'process'" error
 
 export class ApiService {
 

@@ -3,6 +3,10 @@ import { createSlice } from '@reduxjs/toolkit'
 export const counterSlice = createSlice({
     name: 'posts',
     initialState: {
+        page: 1,
+        limit: 10,
+        initialized: false,
+        initializing: false,
         editablePost: null,
         posts: [],
         activeUserPosts: [],
@@ -20,6 +24,18 @@ export const counterSlice = createSlice({
         setActiveUserPosts: (state, action) => {
             state.activeUserPosts = action.payload;
         },
+        incrementPage: (state) => {
+            state.page += 1;
+        },
+        changeLimit: (state, action) => {
+            state.limit = action.payload;
+        },
+        setInitialized: (state, action) => {
+            state.initialized = action.payload;
+        },
+        setInitializing: (state, action) => {
+            state.initializing = action.payload;
+        },
     },
 });
 export const {
@@ -27,6 +43,10 @@ export const {
     setEditablePost,
     setPosts,
     removeEditablePost,
+    incrementPage,
+    changeLimit,
+    setInitialized,
+    setInitializing,
 } = counterSlice.actions
 
 export default counterSlice.reducer

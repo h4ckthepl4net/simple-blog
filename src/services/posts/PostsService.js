@@ -1,6 +1,6 @@
 import {ApiService} from "../api/ApiService";
 import ApiEndpoints from "../../helpers/constants/api-endpoints";
-import PostsServiceException from "./PostsServiceException";
+import {PostsServiceException} from "./PostsServiceException";
 import {constructPost} from "../../helpers/functions/constructPost";
 
 export class PostsService {
@@ -8,15 +8,19 @@ export class PostsService {
 
     static async getPosts(page = 1, limit = 10, authoredByCurrentUser = false) {
         try {
+            const params = {
+                page,
+                limit,
+            };
+            if (authoredByCurrentUser) {
+                params.own = 1;
+            }
             const response = await ApiService.get(ApiEndpoints.getPosts, {
-                params: {
-                    page,
-                    limit,
-                    own: authoredByCurrentUser,
-                },
+                params,
             });
             return response.data.map((el) => constructPost(el));
         } catch (e) {
+            console.log(e);
             throw new PostsServiceException(e, `Failed to get posts ${ authoredByCurrentUser ? 'of current user' : '' }`);
         }
     }
