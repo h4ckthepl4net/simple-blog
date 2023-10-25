@@ -14,5 +14,10 @@ function callControllerFunction ($controller, $function, $request, $response) {
             'error' => true,
             'message' => $e->getMessage(),
         ])->code(HTTPCodes::UNAUTHORIZED)->send();
+    } catch (\ReactBlog\Backend\exceptions\NotFoundException $e) {
+        $response->json([
+            'error' => true,
+            'message' => $e->getMessage(),
+        ])->code(HTTPCodes::NOT_FOUND)->send();
     }
 }
