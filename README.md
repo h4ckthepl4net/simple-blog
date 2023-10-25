@@ -5,7 +5,7 @@ This is a simple blog project made with react.js php and mysql
 
 # To run the project
 
-docker, docker compose plugin, node.js and npm must be installed
+docker, docker compose plugin, node.js and npm must be installed, and docker engine must be started
 
 # Step 1
 
@@ -17,7 +17,7 @@ MYSQL_HOST=mysql-dev
 MYSQL_PASSWORD=123456
 ```
 
-to `/backend/config/.env.dev`
+to `/backend/config/.env.dev` (You can use also MYSQL_USER with MYSQL_PASSWORD to change the DB user)
 
 # Step 2
 
