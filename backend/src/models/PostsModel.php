@@ -84,6 +84,7 @@ class PostsModel extends BaseModel {
     }
 
     public function deletePost($id, $userId = null) { // TODO optimize queries
+        $post = null;
         if ($userId) {
             $post = $this->getPost($id);
             $post = $post[0];
