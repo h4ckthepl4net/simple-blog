@@ -13,7 +13,7 @@ namespace ReactBlog\Backend\models {
             $this->db = $db;
         }
 
-        public function query($sql, $params = [])
+        public function query($sql, $params = [], $closeCursor = true)
         {
             $stmt = $this->db->prepare($sql);
             $paramKeys = array_keys($params);
@@ -34,7 +34,9 @@ namespace ReactBlog\Backend\models {
             }
             $stmt->execute();
             $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-            $stmt->closeCursor();
+            if ($closeCursor) {
+                $stmt->closeCursor(); // TODO maybe do something to optimize DB access time
+            }
             return $result;
         }
 
