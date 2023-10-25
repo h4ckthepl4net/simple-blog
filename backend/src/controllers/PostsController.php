@@ -45,7 +45,7 @@ class PostsController extends BaseController {
         $constraints = [
             'title' => v::stringVal()->length(5, 255)->notEmpty()->notOptional()->setName('title'),
             'content' => v::stringVal()->length(30, 1000)->notEmpty()->notOptional()->setName('content'),
-            'categories' => v::arrayVal()->each(
+            'categories' => v::arrayVal()->length(0, 10)->each(
                 v::stringVal()->length(1, 50)->notEmpty()->notOptional()->setName('category')
             ),
         ];
@@ -55,10 +55,11 @@ class PostsController extends BaseController {
         $content = $body->get('content');
         $categories = $body->get('categories');
         $model = new \ReactBlog\Backend\Models\PostsModel();
-        $model->createPost($user->id, $title, $content, $categories);
+        $postId = $model->createPost($user->id, $title, $content, $categories);
         $response->json([
             'error' => false,
             'message' => 'Post created',
+            'postId' => $postId,
         ])->code(\HTTPCodes::CREATED)->send();
     }
 
@@ -74,6 +75,34 @@ class PostsController extends BaseController {
         $response->json([
             'error' => false,
             'message' => 'Post deleted',
+        ])->code(\HTTPCodes::OK)->send();
+    }
+
+    public function editPost($request, $response) {
+        $user = $this->authenticate();
+        $postIdConstraint = [
+            'postId' => v::intVal()->min(0)->notEmpty()->notOptional()->setName('postId'),
+        ];
+        $this->validateNamedParams($postIdConstraint);
+        $constraints = [
+            'title' => v::stringVal()->length(5, 255)->notEmpty()->notOptional()->setName('title'),
+            'content' => v::stringVal()->length(30, 1000)->notEmpty()->notOptional()->setName('content'),
+            'categories' => v::arrayVal()->length(0, 10)->each(
+                v::stringVal()->length(1, 50)->notEmpty()->notOptional()->setName('category')
+            ),
+        ];
+        $this->validatePostBody($constraints);
+        $postId = $request->paramsNamed()->get('postId');
+        $body = $request->paramsPost();
+        $title = $body->get('title');
+        $content = $body->get('content');
+        $categories = $body->get('categories');
+        $model = new \ReactBlog\Backend\Models\PostsModel();
+        $newPostId = $model->editPost($postId, $user->id, $title, $content, $categories);
+        $response->json([
+            'error' => false,
+            'message' => 'Post updated',
+            'postId' => $newPostId,
         ])->code(\HTTPCodes::OK)->send();
     }
 }
