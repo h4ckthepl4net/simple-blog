@@ -17,6 +17,7 @@ class BaseController
     {
         $this->request = $request;
         $this->response = $response;
+        $this->response->headers()->set('Access-Control-Allow-Origin', '*'); // TODO temporary solution to avoid cors errors
     }
 
     public function validate($constraints, $data): bool {
