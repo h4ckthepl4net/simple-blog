@@ -4,12 +4,16 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "ReactBlog\\Backend\\": "src/"
+            "ReactBlog\\Backend\\": "src/",
+            "ReactBlog\\Backend\\Controllers\\": "src/controllers/",
+            "ReactBlog\\Backend\\Models\\": "src/models/"
         }
     },
     "require": {
         "ext-pdo": "*",
-        "nowakowskir/php-jwt": "^2.1"
+        "nowakowskir/php-jwt": "^2.1",
+        "klein/klein": "^2.1",
+        "respect/validation": "^2.2"
     },
     "scripts": {
     }
