@@ -39,4 +39,41 @@ class PostsController extends BaseController {
             $response->json($post[0]);
         }
     }
+
+    public function createPost($request, $response) {
+        $user = $this->authenticate();
+        $constraints = [
+            'title' => v::stringVal()->length(5, 255)->notEmpty()->notOptional()->setName('title'),
+            'content' => v::stringVal()->length(30, 1000)->notEmpty()->notOptional()->setName('content'),
+            'categories' => v::arrayVal()->each(
+                v::stringVal()->length(1, 50)->notEmpty()->notOptional()->setName('category')
+            ),
+        ];
+        $this->validatePostBody($constraints);
+        $body = $request->paramsPost();
+        $title = $body->get('title');
+        $content = $body->get('content');
+        $categories = $body->get('categories');
+        $model = new \ReactBlog\Backend\Models\PostsModel();
+        $model->createPost($user->id, $title, $content, $categories);
+        $response->json([
+            'error' => false,
+            'message' => 'Post created',
+        ])->code(\HTTPCodes::CREATED)->send();
+    }
+
+    public function deletePost($request, $response) {
+        $user = $this->authenticate();
+        $constraints = [
+            'postId' => v::intVal()->min(0)->notEmpty()->notOptional()->setName('postId'),
+        ];
+        $this->validateNamedParams($constraints);
+        $postId = $request->paramsNamed()->get('postId');
+        $model = new \ReactBlog\Backend\Models\PostsModel();
+        $model->deletePost($postId, $user->id);
+        $response->json([
+            'error' => false,
+            'message' => 'Post deleted',
+        ])->code(\HTTPCodes::OK)->send();
+    }
 }
