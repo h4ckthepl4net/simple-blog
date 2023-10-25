@@ -23,6 +23,8 @@ COPY ./migrate_db.php ./database_connection.php /app/
 
 COPY ./vhost.conf /opt/docker/etc/httpd/vhost.conf
 
+COPY ./db_migrate.sh /opt/docker/provision/entrypoint.d/30-db_migrate.sh
+
 # copy apache config
 #COPY ./docker/api/dev/vhost.conf /opt/docker/etc/httpd/vhost.conf
 

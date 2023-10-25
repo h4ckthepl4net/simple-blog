@@ -4,7 +4,6 @@ include './database_connection.php';
 
 if (!$db) {
     echo "Error: Unable to connect to MySQL." . PHP_EOL;
-    echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
     die(1);
 }
 
@@ -19,7 +18,7 @@ $db->query("
 $db->query("
     CREATE TABLE IF NOT EXISTS categories (
         id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(255) NOT NULL UNIQUE,
+        name VARCHAR(255) NOT NULL UNIQUE
     );
 ");
 
@@ -29,6 +28,7 @@ $db->query("
         title VARCHAR(255) NOT NULL,
         content TEXT NOT NULL,
         user_id INT(6) UNSIGNED NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id)
     );
 ");
