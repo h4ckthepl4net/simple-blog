@@ -2,6 +2,7 @@
 
 namespace ReactBlog\Backend\Controllers;
 use Respect\Validation\Validator as v;
+use ReactBlog\Backend\constants\HTTPCodes;
 
 class PostsController extends BaseController {
     public function getPosts($request, $response) {
@@ -30,7 +31,7 @@ class PostsController extends BaseController {
         $model = new \ReactBlog\Backend\Models\PostsModel();
         $post = $model->getPost($postId);
         if (!array_key_exists(0, $post)) { // TODO check this
-            $response->code(\HTTPCodes::NOT_FOUND);
+            $response->code(HTTPCodes::NOT_FOUND);
             $response->json([
                 'error' => true,
                 'message' => 'Post not found',
@@ -60,7 +61,7 @@ class PostsController extends BaseController {
             'error' => false,
             'message' => 'Post created',
             'postId' => $postId,
-        ])->code(\HTTPCodes::CREATED)->send();
+        ])->code(HTTPCodes::CREATED)->send();
     }
 
     public function deletePost($request, $response) {
@@ -75,7 +76,7 @@ class PostsController extends BaseController {
         $response->json([
             'error' => false,
             'message' => 'Post deleted',
-        ])->code(\HTTPCodes::OK)->send();
+        ])->code(HTTPCodes::OK)->send();
     }
 
     public function editPost($request, $response) {
@@ -103,6 +104,6 @@ class PostsController extends BaseController {
             'error' => false,
             'message' => 'Post updated',
             'postId' => $newPostId,
-        ])->code(\HTTPCodes::OK)->send();
+        ])->code(HTTPCodes::OK)->send();
     }
 }

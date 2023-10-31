@@ -1,5 +1,7 @@
 <?php
 
+use ReactBlog\Backend\constants\HTTPCodes;
+
 function callControllerFunction ($controller, $function, $request, $response) {
     try {
         $controller = new $controller($request, $response);

@@ -6,7 +6,9 @@
         "psr-4": {
             "ReactBlog\\Backend\\": "src/",
             "ReactBlog\\Backend\\Controllers\\": "src/controllers/",
-            "ReactBlog\\Backend\\Models\\": "src/models/"
+            "ReactBlog\\Backend\\Models\\": "src/models/",
+            "ReactBlog\\Backend\\Services\\": "src/services/",
+            "ReactBlog\\Backend\\Constants\\": "src/constants/"
         }
     },
     "require": {

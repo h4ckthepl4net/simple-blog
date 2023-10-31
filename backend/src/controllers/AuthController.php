@@ -3,6 +3,7 @@
 namespace ReactBlog\Backend\Controllers;
 use ReactBlog\Backend\services\JwtService;
 use Respect\Validation\Validator as v;
+use ReactBlog\Backend\constants\HTTPCodes;
 
 class AuthController extends BaseController {
     public function login($request, $response) {
@@ -41,14 +42,14 @@ class AuthController extends BaseController {
         $model = new \ReactBlog\Backend\Models\UserModel();
         $user = $model->checkUserExists($username);
         if ($user) {
-            $response->code(\HTTPCodes::CONFLICT);
+            $response->code(HTTPCodes::CONFLICT);
             $response->json([
                 'error' => true,
                 'message' => 'User already exists',
             ]);
         } else {
             $model->createUser($username, $password);
-            $response->code(\HTTPCodes::CREATED);
+            $response->code(HTTPCodes::CREATED);
             $response->json([
                 'error' => false,
                 'message' => 'User created',

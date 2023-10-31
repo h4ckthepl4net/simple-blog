@@ -1,4 +1,6 @@
 <?php
+namespace ReactBlog\Backend\constants;
+
 class HTTPCodes {
     const OK = 200;
     const CREATED = 201;
