@@ -1,12 +1,12 @@
 import {Post} from "../../models/Post";
 
 export function constructPost(postData) {
-    return new Post(
-        postData.id,
-        postData.title,
-        postData.content,
-        postData.categories,
-        postData.user_id,
-        postData.created_at,
-    );
+    return {
+        id: postData.id,
+        title: postData.title,
+        content: postData.content,
+        author: postData.username,
+        categories: postData.categories,
+        date: postData.created_at,
+    };
 }

@@ -1,0 +1,12 @@
+@use "node_modules/bootstrap/scss/bootstrap";
+
+.posts-container {
+  @extend .d-flex;
+  @extend .flex-column;
+  @extend .align-items-stretch;
+  @extend .justify-content-start;
+  max-width: 1200px;
+  margin: 0 auto;
+  row-gap: 16px;
+  padding: 24px;
+}
