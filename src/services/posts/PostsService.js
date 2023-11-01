@@ -20,7 +20,7 @@ export class PostsService {
             });
             return {
                 posts: response.data.posts.map((el) => constructPost(el)),
-                count: response.data.total,
+                count: response.data.count,
             };
         } catch (e) {
             console.log(e);
