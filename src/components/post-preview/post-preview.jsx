@@ -3,10 +3,10 @@ import './post-preview.scss';
 
 const visibleCategoriesCount = 3;
 
-export const PostPreview = ({ post }) => {
+export const PostPreview = ({ post, overlay }) => {
     const previewCategories = useMemo(() => post.categories?.slice(0, visibleCategoriesCount), [post.categories]);
     return (
-        <div className="post-preview-container">
+        <div className={"post-preview-container " + (overlay ? "post-preview-container-overlay" : '') }>
             <div className="post-author-title-container">
                 <span className="post-author">Author: {post.author}</span>
                 <h6 title={post.title}>{post.title}</h6>
