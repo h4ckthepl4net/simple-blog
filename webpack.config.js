@@ -4,9 +4,11 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports={
     mode: "development",
     entry: "./index.js",
+    devtool: 'inline-source-map', // 'eval-source-map
     output: {
         path: path.resolve(__dirname, "public"),
-        filename: "main.js"
+        filename: "main.js",
+        publicPath: "/",
     },
     target: "web",
     devServer: {
@@ -14,7 +16,8 @@ module.exports={
         static: ["./public"],
         open: true,
         hot: true,
-        liveReload: true
+        liveReload: true,
+        historyApiFallback: true,
     },
     resolve: {
         extensions: ['.js','.jsx','.json']
@@ -27,10 +30,11 @@ module.exports={
                 use:  'babel-loader'
             },
             {
-                test: /\.css$/i,
+                test: /(\.css$)|(\.scss$)/i,
                 use: [
                     'style-loader',
                     'css-loader',
+                    'sass-loader',
                 ],
             },
         ]

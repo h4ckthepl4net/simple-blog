@@ -9,6 +9,7 @@ export const counterSlice = createSlice({
         initializing: false,
         editablePost: null,
         posts: [],
+        total: 0,
         activeUserPosts: [],
     },
     reducers: {
@@ -20,6 +21,9 @@ export const counterSlice = createSlice({
         },
         setPosts: (state, action) => {
             state.posts = action.payload;
+        },
+        setTotal: (state, action) => {
+            state.total = action.payload;
         },
         setActiveUserPosts: (state, action) => {
             state.activeUserPosts = action.payload;
@@ -42,6 +46,7 @@ export const {
     setActiveUserPosts,
     setEditablePost,
     setPosts,
+    setTotal,
     removeEditablePost,
     incrementPage,
     changeLimit,
