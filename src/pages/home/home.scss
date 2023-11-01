@@ -10,3 +10,12 @@
   row-gap: 16px;
   padding: 24px;
 }
+
+.pagination {
+  @extend .align-self-center;
+
+  &-loading {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+}
