@@ -18,7 +18,10 @@ export class PostsService {
             const response = await ApiService.get(ApiEndpoints.getPosts, {
                 params,
             });
-            return response.data.map((el) => constructPost(el));
+            return {
+                posts: response.data.posts.map((el) => constructPost(el)),
+                count: response.data.total,
+            };
         } catch (e) {
             console.log(e);
             throw new PostsServiceException(e, `Failed to get posts ${ authoredByCurrentUser ? 'of current user' : '' }`);
