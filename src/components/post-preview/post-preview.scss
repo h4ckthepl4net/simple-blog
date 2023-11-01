@@ -1,0 +1,44 @@
+@use "node_modules/bootstrap/scss/bootstrap";
+
+.post-preview-container {
+    @extend .px-3;
+    @extend .py-5;
+    @extend .bg-light;
+    @extend .shadow-sm;
+    @extend .d-flex;
+    @extend .justify-content-between;
+    @extend .flex-wrap;
+    border-radius: 16px;
+    row-gap: 16px;
+}
+
+.post-preview-container .post-author-title-container {
+    @extend .d-flex;
+    @extend .flex-column;
+    @extend .align-items-start;
+    @extend .justify-content-start;
+    row-gap: 16px;
+}
+
+.post-preview-container .post-author-title-container .post-author {
+    @extend .badge;
+    @extend .bg-info;
+    @extend .text-dark;
+    @extend .me-2;
+    @extend .text-truncate;
+}
+
+.post-preview-container .post-categories-container {
+    @extend .d-flex;
+    @extend .flex-wrap;
+    @extend .align-items-center;
+    @extend .justify-content-start;
+}
+
+.post-preview-container .post-categories-container .post-category {
+    @extend .badge;
+    @extend .rounded-pill;
+    @extend .bg-secondary;
+    @extend .text-light;
+    @extend .me-2;
+}
