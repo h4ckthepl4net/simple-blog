@@ -35,7 +35,26 @@ class PostsModel extends BaseModel {
         ";
         $params['limit'] = $limit;
         $params['offset'] = $offset;
-        return $this->query($sql, $params);
+        $result = [];
+        $posts = $this->query($sql, $params);
+        $result['posts'] = $posts;
+        $params = [];
+        $sql = "
+            SELECT COUNT(*) AS count
+            FROM posts
+        ";
+        if ($userId) {
+            $sql .= "WHERE posts.user_id = :user_id";
+            $params['user_id'] = $userId;
+        }
+        try {
+            $count = $this->query($sql, $params);
+            $result['count'] = $count[0]['count'];
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+            $result['count'] = 0;
+        }
+        return $result;
     }
 
     public function getPost($id) {
