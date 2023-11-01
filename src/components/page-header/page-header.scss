@@ -2,12 +2,25 @@
 
 .page-header {
   @extend .d-flex;
+  @extend .flex-wrap;
   @extend .align-items-center;
   @extend .w-100;
   @extend .justify-content-center;
   @extend .mt-3;
+  @extend .p-3;
 
   &-spinner {
     @extend .ms-3;
+  }
+
+  &-error {
+    @extend .alert;
+    @extend .alert-warning;
+    @extend .w-100;
+    @extend .d-flex;
+    @extend .flex-column;
+    @extend .justify-content-center;
+    @extend .align-items-center;
+    row-gap: 1em;
   }
 }
