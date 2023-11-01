@@ -1,0 +1,8 @@
+.navbar-expand-sm .navbar-nav .nav-link {
+  padding-right: var(--bs-navbar-nav-link-padding-x);
+  padding-left: var(--bs-navbar-nav-link-padding-x);
+}
+
+.navbar-nav {
+  flex-direction: row;
+}
