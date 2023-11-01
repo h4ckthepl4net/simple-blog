@@ -1,0 +1,13 @@
+@use "node_modules/bootstrap/scss/bootstrap";
+
+.page-header {
+  @extend .d-flex;
+  @extend .align-items-center;
+  @extend .w-100;
+  @extend .justify-content-center;
+  @extend .mt-3;
+
+  &-spinner {
+    @extend .ms-3;
+  }
+}
