@@ -2,8 +2,24 @@ import {ApiService} from "../api/ApiService";
 import ApiEndpoints from "../../helpers/constants/api-endpoints";
 import {PostsServiceException} from "./PostsServiceException";
 import {constructPost} from "../../helpers/functions/constructPost";
+import {AxiosError} from "axios";
 
 export class PostsService {
+
+    static async getPost(id) {
+        try {
+            const endpoint = ApiEndpoints.getPost.replace(':id', id);
+            const response = await ApiService.get(endpoint);
+            return constructPost(response.data);
+        } catch (e) {
+            if (e instanceof AxiosError) {
+                if (e.response?.status === 404) {
+                    throw new PostsServiceException(e, "Post not found");
+                }
+            }
+            throw new PostsServiceException(e, "Failed to get post");
+        }
+    }
 
 
     static async getPosts(page = 1, limit = 10, authoredByCurrentUser = false) {
@@ -28,7 +44,7 @@ export class PostsService {
         }
     }
 
-    static async createPost(title, content, categories, ) {
+    static async createPost(title, content, categories) {
         try {
             const response = await ApiService.post(ApiEndpoints.createPost, {
                 title,
@@ -38,8 +54,8 @@ export class PostsService {
             return constructPost({
                 title,
                 content,
-                categories,
-                id: response.data.id,
+                categories: categories.join(','),
+                id: response.data.postId,
                 created_at: new Date(),
             });
         } catch (e) {
