@@ -7,19 +7,19 @@ function callControllerFunction ($controller, $function, $request, $response) {
         $controller = new $controller($request, $response);
         return $controller->$function($request, $response);
     } catch (\Respect\Validation\Exceptions\ValidationException $e) {
-        $response->json([
+        $response->code(HTTPCodes::BAD_REQUEST)->json([
             'error' => true,
             'message' => $e->getMessage(),
-        ])->code(HTTPCodes::BAD_REQUEST)->send();
+        ])->send();
     } catch (\Nowakowskir\JWT\Exceptions\IntegrityViolationException $e) {
-        $response->json([
+        $response->code(HTTPCodes::UNAUTHORIZED)->json([
             'error' => true,
             'message' => $e->getMessage(),
-        ])->code(HTTPCodes::UNAUTHORIZED)->send();
+        ])->send();
     } catch (\ReactBlog\Backend\exceptions\NotFoundException $e) {
-        $response->json([
+        $response->code(HTTPCodes::NOT_FOUND)->json([
             'error' => true,
             'message' => $e->getMessage(),
-        ])->code(HTTPCodes::NOT_FOUND)->send();
+        ])->send();
     }
 }

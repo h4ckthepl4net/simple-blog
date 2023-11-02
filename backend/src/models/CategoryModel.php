@@ -48,6 +48,12 @@ class CategoryModel extends BaseModel
 
     public function createMultipleCategories($categories) // TODO make user of RETURNING clause
     {
+        if (!is_array($categories)) {
+            throw new \Exception('Invalid categories');
+        }
+        if (count($categories) < 1) {
+            return [];
+        }
         $sql = "
             INSERT IGNORE INTO categories (name) VALUES 
         ";
@@ -55,15 +61,23 @@ class CategoryModel extends BaseModel
         $categoriesCount = count($categories);
         for ($i = 0; $i < $categoriesCount; $i++) {
             $sql .= '(:name'.$i.')';
-            $params[] = [
-                'name'.$i => $categories[$i],
-            ];
+            $params['name'.$i] = strtolower($categories[$i]);
+            if ($i < $categoriesCount - 1) {
+                $sql .= ',';
+            }
         }
         $sql .= ';';
         $this->query($sql, $params);
         $sql2 = "
-            SELECT id FROM categories WHERE name IN (".implode(',', array_fill(0, $categoriesCount, '?')).");
+            SELECT id FROM categories WHERE lower(name) IN (
         "; // TODO fix this query
-        return $this->query($sql2, $categories);
+        for ($i = 0; $i < $categoriesCount; $i++) {
+            $sql2 .= 'lower(:name'.$i.')';
+            if ($i < $categoriesCount - 1) {
+                $sql2 .= ',';
+            }
+        }
+        $sql2 .= ');';
+        return $this->query($sql2, $params);
     }
 }

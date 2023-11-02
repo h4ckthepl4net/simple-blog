@@ -6,7 +6,7 @@ use ReactBlog\Backend\exceptions\NotFoundException;
 use ReactBlog\Backend\models\BaseModel;
 
 class PostsModel extends BaseModel {
-    public function getPosts($page, $limit, $userId = null) {
+    public function getPosts($page, $limit) { // , $userId = null
         if ($page < 1) {
             throw new \Exception('Invalid page');
         }
@@ -15,20 +15,29 @@ class PostsModel extends BaseModel {
         }
         $offset = ($page - 1) * $limit;
         $params = [];
+//        $sql = "
+//            SELECT posts.id, posts.title, posts.content, users.username, categories.name AS category_name
+//            FROM posts
+//            LEFT OUTER JOIN users
+//                ON posts.user_id = users.id
+//            LEFT OUTER JOIN posts_categories
+//                ON posts.id = posts_categories.post_id
+//            LEFT OUTER JOIN categories
+//                ON posts_categories.category_id = categories.id
+//        ";
         $sql = "
-            SELECT posts.id, posts.title, posts.content, users.username, categories.name AS category_name
+            SELECT posts.id, posts.title, posts.content, GROUP_CONCAT(categories.name) AS categories
             FROM posts
-            LEFT OUTER JOIN users
-                ON posts.user_id = users.id
             LEFT OUTER JOIN posts_categories
                 ON posts.id = posts_categories.post_id
             LEFT OUTER JOIN categories
                 ON posts_categories.category_id = categories.id
+            GROUP BY posts.id
         ";
-        if ($userId) {
-            $sql .= "WHERE posts.user_id = :user_id";
-            $params['user_id'] = $userId;
-        }
+//        if ($userId) {
+//            $sql .= "WHERE posts.user_id = :user_id";
+//            $params['user_id'] = $userId;
+//        }
         $sql .= "
             ORDER BY posts.created_at DESC
             LIMIT :limit OFFSET :offset;
@@ -43,10 +52,10 @@ class PostsModel extends BaseModel {
             SELECT COUNT(*) AS count
             FROM posts
         ";
-        if ($userId) {
-            $sql .= "WHERE posts.user_id = :user_id";
-            $params['user_id'] = $userId;
-        }
+//        if ($userId) {
+//            $sql .= "WHERE posts.user_id = :user_id";
+//            $params['user_id'] = $userId;
+//        }
         try {
             $count = $this->query($sql, $params);
             $result['count'] = $count[0]['count'];
@@ -58,16 +67,27 @@ class PostsModel extends BaseModel {
     }
 
     public function getPost($id) {
+//        $sql = "
+//            SELECT posts.id, posts.title, posts.content, users.username, GROUP_CONCAT(categories.name) AS categories
+//            FROM posts
+//            LEFT OUTER JOIN users
+//                ON posts.user_id = users.id
+//            LEFT OUTER JOIN posts_categories
+//                ON posts.id = posts_categories.post_id
+//            LEFT OUTER JOIN categories
+//                ON posts_categories.category_id = categories.id
+//            WHERE posts.id = :id
+//            GROUP BY posts.id;
+//        ";
         $sql = "
-            SELECT posts.id, posts.title, posts.content, users.username, categories.name AS category_name
+            SELECT posts.id, posts.title, posts.content, GROUP_CONCAT(categories.name) AS categories
             FROM posts
-            LEFT OUTER JOIN users
-                ON posts.user_id = users.id
             LEFT OUTER JOIN posts_categories
                 ON posts.id = posts_categories.post_id
             LEFT OUTER JOIN categories
                 ON posts_categories.category_id = categories.id
-            WHERE posts.id = :id;
+            WHERE posts.id = :id
+            GROUP BY posts.id;
         ";
         $params = [
             'id' => $id,
@@ -75,18 +95,24 @@ class PostsModel extends BaseModel {
         return $this->query($sql, $params);
     }
 
-    public function createPost($userId, $title, $content, $categories) {
+    public function createPost($title, $content, $categories) { // $userId,
+//        $sql = "
+//            INSERT INTO posts (user_id, title, content) VALUES (:user_id, :title, :content);
+//        ";
         $sql = "
-            INSERT INTO posts (user_id, title, content) VALUES (:user_id, :title, :content);
+            INSERT INTO posts (title, content) VALUES (:title, :content);
         ";
         $params = [
-            'user_id' => $userId,
+//            'user_id' => $userId,
             'title' => $title,
             'content' => $content,
         ];
         $this->query($sql, $params);
         $postId = $this->db->lastInsertId();
         $categoryIds = (new CategoryModel)->createMultipleCategories($categories);
+        if (count($categoryIds) < 1) {
+            return $postId;
+        }
         $sql = "
             INSERT IGNORE INTO posts_categories (post_id, category_id) VALUES 
         ";
@@ -96,21 +122,24 @@ class PostsModel extends BaseModel {
         $categoriesCount = count($categoryIds);
         for ($i = 0; $i < $categoriesCount; $i++) {
             $sql .= '(:post_id, :category_id'.$i.')';
-            $params['category_id'.$i] = $categoryIds[$i];
+            $params['category_id'.$i] = $categoryIds[$i]['id'];
+            if ($i < $categoriesCount - 1) {
+                $sql .= ',';
+            }
         }
         $this->query($sql, $params);
         return $postId;
     }
 
-    public function deletePost($id, $userId = null) { // TODO optimize queries
+    public function deletePost($id) { // , $userId = null // TODO optimize queries
         $post = null;
-        if ($userId) {
-            $post = $this->getPost($id);
-            $post = $post[0];
-            if (!$post || $post['user_id'] !== $userId) {
-                throw new NotFoundException('Post not found');
-            }
-        }
+//        if ($userId) {
+//            $post = $this->getPost($id);
+//            $post = $post[0];
+//            if (!$post || $post['user_id'] !== $userId) {
+//                throw new NotFoundException('Post not found');
+//            }
+//        }
         $sql = "
             DELETE FROM posts_categories WHERE post_id = :id;
         ";
@@ -125,9 +154,9 @@ class PostsModel extends BaseModel {
         return $post;
     }
 
-    public function editPost($postId, $updateData, $userId = null) {
-        $deletedPostData = $this->deletePost($postId, $userId); // TODO done this to do it faster, but it's not the best way
-        $mergedData = array_merge($deletedPostData, $updateData);
-        return $this->createPost($userId, $mergedData['title'], $mergedData['content'], $mergedData['categories']);
-    }
+//    public function editPost($postId, $updateData, $userId = null) {
+//        $deletedPostData = $this->deletePost($postId, $userId); // TODO done this to do it faster, but it's not the best way
+//        $mergedData = array_merge($deletedPostData, $updateData);
+//        return $this->createPost($userId, $mergedData['title'], $mergedData['content'], $mergedData['categories']);
+//    }
 }

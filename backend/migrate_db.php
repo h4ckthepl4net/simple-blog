@@ -7,13 +7,13 @@ if (!$db) {
     die(1);
 }
 
-$db->query("
-    CREATE TABLE IF NOT EXISTS users (
-        id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        username VARCHAR(30) NOT NULL UNIQUE,
-        password VARCHAR(255) NOT NULL
-    );
-");
+//$db->query("
+//    CREATE TABLE IF NOT EXISTS users (
+//        id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+//        username VARCHAR(30) NOT NULL UNIQUE,
+//        password VARCHAR(255) NOT NULL
+//    );
+//");
 
 $db->query("
     CREATE TABLE IF NOT EXISTS categories (
@@ -22,14 +22,24 @@ $db->query("
     );
 ");
 
+//$db->query("
+//    CREATE TABLE IF NOT EXISTS posts (
+//        id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+//        title VARCHAR(255) NOT NULL,
+//        content TEXT NOT NULL,
+//        user_id INT(6) UNSIGNED NOT NULL,
+//        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+//        FOREIGN KEY (user_id) REFERENCES users(id)
+//    );
+//");
+
+
 $db->query("
     CREATE TABLE IF NOT EXISTS posts (
         id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
         content TEXT NOT NULL,
-        user_id INT(6) UNSIGNED NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES users(id)
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 ");
 

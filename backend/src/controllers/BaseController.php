@@ -36,7 +36,7 @@ class BaseController
     }
 
     public function validatePostBody($constraints) {
-        $params = $this->request->paramsPost()->all();
+        $params = json_decode($this->request->body(), true);
         $this->validate($constraints, $params);
     }
 

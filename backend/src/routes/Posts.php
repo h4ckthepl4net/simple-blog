@@ -21,6 +21,14 @@ $klein->respond('POST', '/posts/new', function ($request, $response) {
     );
 });
 
+$klein->respond('OPTIONS', '/posts/new', function ($request, $response) {
+    $response->headers()->set('Access-Control-Allow-Methods', 'POST');
+    $response->headers()->set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    $response->headers()->set('Access-Control-Allow-Origin', '*');
+    $response->code(200);
+    $response->send();
+});
+
 $klein->respond('GET', '/posts/[i:postId]', function ($request, $response) {
     callControllerFunction(
         'ReactBlog\Backend\Controllers\PostsController',
@@ -39,12 +47,20 @@ $klein->respond('DELETE', '/posts/[i:postId]', function ($request, $response) {
     );
 });
 
-$klein->respond('PATCH', '/posts/[i:postId]', function ($request, $response) {
-    callControllerFunction(
-        'ReactBlog\Backend\Controllers\PostsController',
-        'editPost',
-        $request,
-        $response,
-    );
+$klein->respond('OPTIONS', '/posts/[i:postId]', function ($request, $response) {
+    $response->headers()->set('Access-Control-Allow-Methods', 'DELETE');
+    $response->headers()->set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    $response->headers()->set('Access-Control-Allow-Origin', '*');
+    $response->code(200);
+    $response->send();
 });
+
+//$klein->respond('PATCH', '/posts/[i:postId]', function ($request, $response) {
+//    callControllerFunction(
+//        'ReactBlog\Backend\Controllers\PostsController',
+//        'editPost',
+//        $request,
+//        $response,
+//    );
+//});
 
