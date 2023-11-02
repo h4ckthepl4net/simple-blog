@@ -1,0 +1,32 @@
+@use "node_modules/bootstrap/scss/bootstrap";
+
+.new-post-categories-container {
+    @extend .d-flex;
+    @extend .flex-wrap;
+    @extend .align-items-center;
+    @extend .justify-content-start;
+    @extend .mt-3;
+    font-size: 16px;
+    row-gap: 8px;
+}
+
+.new-post-form-action-container {
+    @extend .d-flex;
+    @extend .justify-content-center;
+    @extend .align-items-center;
+    @extend .flex-wrap;
+    column-gap: 16px;
+    row-gap: 8px;
+}
+
+.post-category {
+    @extend .badge;
+    @extend .rounded-pill;
+    @extend .bg-secondary;
+    @extend .text-light;
+    @extend .me-2;
+    @extend .text-capitalize;
+    @extend .py-2;
+    @extend .px-3;
+    cursor: pointer;
+}
