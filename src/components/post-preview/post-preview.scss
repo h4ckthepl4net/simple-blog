@@ -10,8 +10,10 @@
     @extend .flex-wrap;
     border-radius: 16px;
     row-gap: 16px;
+    cursor: pointer;
 
     &-overlay {
+        cursor: auto;
         opacity: 0.7;
         pointer-events: none;
     }
@@ -46,4 +48,5 @@
     @extend .bg-secondary;
     @extend .text-light;
     @extend .me-2;
+    @extend .text-capitalize;
 }

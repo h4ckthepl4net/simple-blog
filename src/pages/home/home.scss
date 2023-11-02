@@ -5,10 +5,15 @@
   @extend .flex-column;
   @extend .align-items-stretch;
   @extend .justify-content-start;
-  max-width: 1200px;
-  margin: 0 auto;
   row-gap: 16px;
-  padding: 24px;
+}
+
+.posts-empty {
+  @extend .d-flex;
+  @extend .flex-column;
+  @extend .align-self-center;
+  @extend .align-items-center;
+  row-gap: 16px;
 }
 
 .pagination {

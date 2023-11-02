@@ -1,14 +1,17 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {PostsService} from "../../services/posts/PostsService";
-import {setLoading, setPosts, setTotal, setPage} from "../../store/posts/posts";
+import {setLoading, setPosts, setTotal, setPage, setViewablePost} from "../../store/posts/posts";
 import {PageHeader} from "../../components/page-header/page-header";
 import {PostPreview} from "../../components/post-preview/post-preview";
 import './home.scss';
+import '../../scss/page.scss';
 import ReactPaginate from "react-paginate";
+import {Link, useNavigate} from "react-router-dom";
 
 
 const Home = () => {
+    const navigate = useNavigate();
     const isInitializing = useRef(false);
     const isInitialized = useRef(false);
     const [error, setError] = useState(null);
@@ -31,10 +34,11 @@ const Home = () => {
             if (page === pageBefore) {
                 dispatch(setPosts([]));
                 dispatch(setTotal(0));
+                console.error(e);
                 setError({
                     message: "An error occurred while fetching posts.",
                     callback: fetchPosts,
-                    text: "Retry"
+                    text: "Retry",
                 });
             }
         } finally {
@@ -42,6 +46,11 @@ const Home = () => {
                 dispatch(setLoading(false));
             }
         }
+    }
+
+    const viewPost = (post) => {
+        // dispatch(setViewablePost(post));
+        navigate(`/posts/${post.id}`);
     }
 
     useEffect(() => {
@@ -64,13 +73,23 @@ const Home = () => {
     }, [page, limit]);
 
     return (
-        <div>
+        <div className="page-container">
             <PageHeader title="Posts" loading={isLoading} error={error}/>
             <div className="posts-container">
                 {
+                    posts &&
+                    posts.length > 0 &&
                     posts.map(post => (
-                        <PostPreview key={post.id} post={post} overlay={isLoading}/>
+                        <PostPreview key={post.id} post={post} overlay={isLoading} onClick={viewPost}/>
                     ))
+                }
+                {
+                    (!posts || posts.length === 0) &&
+                    !isLoading &&
+                    <div className="posts-empty">
+                        No posts
+                        <Link to={"/posts/new"} className="btn btn-primary">Create one</Link>
+                    </div>
                 }
                 {   total > limit &&
                     <ReactPaginate pageCount={total / limit}
