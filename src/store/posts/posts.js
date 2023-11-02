@@ -4,9 +4,10 @@ export const counterSlice = createSlice({
     name: 'posts',
     initialState: {
         page: 1,
-        limit: 1,
+        limit: 5,
         loading: false,
         editablePost: null,
+        viewablePost: null,
         posts: [],
         total: 0,
         activeUserPosts: [],
@@ -17,6 +18,12 @@ export const counterSlice = createSlice({
         },
         removeEditablePost: (state) => {
             state.editablePost = null;
+        },
+        setViewablePost: (state, action) => {
+            state.viewablePost = action.payload;
+        },
+        removeViewablePost: (state) => {
+            state.viewablePost = null;
         },
         setPosts: (state, action) => {
             state.posts = action.payload;
@@ -51,6 +58,8 @@ export const {
     changeLimit,
     setLoading,
     setPage,
+    setViewablePost,
+    removeViewablePost,
 } = counterSlice.actions
 
 export default counterSlice.reducer
