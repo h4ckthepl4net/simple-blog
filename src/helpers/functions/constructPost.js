@@ -6,7 +6,7 @@ export function constructPost(postData) {
         title: postData.title,
         content: postData.content,
         author: postData.username,
-        categories: postData.categories,
+        categories: postData.categories.split(','),
         date: postData.created_at,
     };
 }
