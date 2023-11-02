@@ -1,0 +1,32 @@
+@use "node_modules/bootstrap/scss/bootstrap";
+
+.post-container {
+    @extend .d-flex;
+    @extend .flex-column;
+    @extend .align-items-start;
+    @extend .justify-content-start;
+    row-gap: 16px;
+
+    &-actions {
+        @extend .d-flex;
+        @extend .justify-content-between;
+        @extend .align-items-center;
+        @extend .flex-wrap;
+        @extend .w-100;
+        column-gap: 16px;
+    }
+}
+
+.post-title, .post-content {
+    word-break: break-word;
+}
+
+.post-categories-container {
+    @extend .d-flex;
+    @extend .flex-wrap;
+    @extend .align-items-center;
+    @extend .justify-content-start;
+    @extend .mt-3;
+    font-size: 16px;
+    row-gap: 8px;
+}
